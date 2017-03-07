@@ -76,6 +76,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Web.DataVisualization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -98,6 +99,7 @@
     <Content Include="App_Data\Database_log.ldf">
       <DependentUpon>Database.mdf</DependentUpon>
     </Content>
+    <Content Include="DeckBuilder.aspx" />
     <Content Include="frontPage.aspx" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
@@ -115,6 +117,13 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeckBuilder.aspx.cs">
+      <DependentUpon>DeckBuilder.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="DeckBuilder.aspx.designer.cs">
+      <DependentUpon>DeckBuilder.aspx</DependentUpon>
+    </Compile>
     <Compile Include="frontPage.aspx.cs">
       <DependentUpon>frontPage.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
