@@ -23,14 +23,34 @@ namespace AWP_TCG
 
         protected void existingSubmit_Click(object sender, EventArgs e)
         {
-
+            int validation = 0;
             using (var conn = new SqlConnection(connectionString))
             {
+                using (SqlCommand cmd = new SqlCommand("login"))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@username", username.Text);
+                    cmd.Parameters.AddWithValue("@password", password.Text);
+                    cmd.Connection = conn;
+                    conn.Open();
+                    validation = Convert.ToInt32(cmd.ExecuteScalar());
+                    conn.Close();
+
+                }
+                switch (validation)
+                {
+                    case -1:
+                        //Login failed, Username and Password incorrect
+                        break;
+                    default:
+                        //Login succeeded, add the parameters to session
+                        Session["username"] = username.Text;
+                        Session["password"] = password.Text;
+                        Response.Redirect("frontPage.aspx");
+                        break;
+                }
             }
 
-
-            Session["username"] = username.Text;
-            Session["password"] = password.Text;
         }
 
         //prevent duplicate usernames
@@ -58,6 +78,7 @@ namespace AWP_TCG
                     command.Parameters.Add(parameters[2]);
                     conn.Open();
                     command.ExecuteNonQuery();
+                    conn.Close();
                 }
             }//add to db
 
