@@ -10,14 +10,23 @@
 </head>
 <body>
     <form id="form1" runat="server">
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [cardID], [cardName], [cardCost], [blueCost], [greenCost], [redCost], [whiteCost], [blackCost], [cardDescription] FROM [Card]"></asp:SqlDataSource>
     <div>
     
-        Deck Builder Prototype:    </div>
+        Deck Builder Prototype:   
+
+    </div>
 
         <br />
         CARDS AVAILABLE:
-        <asp:GridView ID="AllCards" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1" OnRowCommand="AllCards_RowCommand" >
+       <div id="newDeckDiv" runat="server">
+        <asp:TextBox ID="DeckName" runat="server" Text="Enter Name"></asp:TextBox>
+        <asp:Button ID="SaveButton" runat="server" Text="Create Deck!" OnClick="SaveButton_Click" />
+       </div>
+        <div id="cardSelectionDiv" runat="server" Visible="false">
+        <asp:GridView ID="AllCards" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1" OnRowCommand="AllCards_RowCommand">
             <Columns>
+                <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" />
                 <asp:BoundField DataField="cardName" HeaderText="cardName" SortExpression="cardName" />
                 <asp:BoundField DataField="cardCost" HeaderText="cardCost" SortExpression="cardCost" />
                 <asp:BoundField DataField="blueCost" HeaderText="blueCost" SortExpression="blueCost" />
@@ -29,12 +38,19 @@
                 <asp:ButtonField runat="server" Text="Add"  />
             </Columns>
         </asp:GridView>
-        <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [cardName], [cardCost], [blueCost], [greenCost], [redCost], [whiteCost], [blackCost], [cardDescription] FROM [Card]"></asp:SqlDataSource>
-
+        </div>
         <hr />
+      <div id="currentDeckDiv" runat="server" Visible="false">
         CURRENT DECK:
-        <asp:TextBox ID="DeckName" runat="server" Text="ENTER DECK NAME"></asp:TextBox>
-        <asp:Button ID="SaveButton" runat="server" Text="Save" />
+        <asp:Label id="currentDeckNameLabel" runat="server"></asp:Label>
+      <asp:GridView ID="currentDeck" runat="server" AutoGenerateColumns="False" >
+            <Columns>
+                <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" />
+                <asp:BoundField DataField="cardName" HeaderText="cardName" SortExpression="cardName" />
+                <asp:ButtonField runat="server" Text="Remove"  />
+            </Columns>
+        </asp:GridView>
+    </div>
     </form>
 </body>
 </html>
