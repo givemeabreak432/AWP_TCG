@@ -18,15 +18,11 @@
     </div>
 
         <br />
-        CARDS AVAILABLE:
-       <div id="newDeckDiv" runat="server">
-        <asp:TextBox ID="DeckName" runat="server" Text="Enter Name"></asp:TextBox>
-        <asp:Button ID="SaveButton" runat="server" Text="Create Deck!" OnClick="SaveButton_Click" />
-       </div>
         <div id="cardSelectionDiv" runat="server" Visible="false">
-        <asp:GridView ID="AllCards" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1" OnRowCommand="AllCards_RowCommand">
+         CARDS AVAILABLE:
+        <asp:GridView ID="AllCards" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1" OnRowCommand="AllCards_RowCommand" DataKeyNames="cardID">
             <Columns>
-                <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" />
+                <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" InsertVisible="False" ReadOnly="True" />
                 <asp:BoundField DataField="cardName" HeaderText="cardName" SortExpression="cardName" />
                 <asp:BoundField DataField="cardCost" HeaderText="cardCost" SortExpression="cardCost" />
                 <asp:BoundField DataField="blueCost" HeaderText="blueCost" SortExpression="blueCost" />
@@ -35,7 +31,7 @@
                 <asp:BoundField DataField="whiteCost" HeaderText="whiteCost" SortExpression="whiteCost" />
                 <asp:BoundField DataField="blackCost" HeaderText="blackCost" SortExpression="blackCost" />
                 <asp:BoundField DataField="cardDescription" HeaderText="cardDescription" SortExpression="cardDescription" />
-                <asp:ButtonField runat="server" Text="Add"  />
+                <asp:ButtonField runat="server" Text="Add To Deck"  />
             </Columns>
         </asp:GridView>
         </div>
@@ -50,7 +46,16 @@
                 <asp:ButtonField runat="server" Text="Remove"  />
             </Columns>
         </asp:GridView>
-    </div>
+       </div>
+      <div id="newDeckDiv" runat="server">
+        CREATE NEW DECK:
+        <asp:TextBox ID="DeckName" runat="server" Text="Enter Name"></asp:TextBox>
+        <asp:Button ID="SaveButton" runat="server" Text="Create Deck!" OnClick="SaveButton_Click" /><br />
+        SELECT DECK:
+          <asp:DropDownList ID="DropdownOfDecks" runat="server" DataSourceID="SqlDataSource2" DataTextField="deckName" DataValueField="deckName" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"></asp:DropDownList>
+          <asp:Button ID="SelectButton" runat="server" Text="Select Deck!" OnClick="SelectButton_Click" /><br /> 
+          <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [deckName] FROM [DECK]"></asp:SqlDataSource>
+      </div>
     </form>
 </body>
 </html>

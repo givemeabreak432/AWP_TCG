@@ -16,7 +16,7 @@ namespace AWP_TCG
         {
             if(Session["currentDeckID"] != null)
             {
-                newDeckDiv.Visible = false;
+                newDeckDiv.Visible = true;
                 cardSelectionDiv.Visible = true;
                 currentDeckDiv.Visible = true;
 
@@ -63,12 +63,39 @@ namespace AWP_TCG
 
                 }
             }
-            newDeckDiv.Visible = false;
+            newDeckDiv.Visible = true;
             cardSelectionDiv.Visible = true;
             currentDeckDiv.Visible = true;
             currentDeckNameLabel.Text = (string)Session["currentDeckName"];
         }
 
-            
+        protected void SelectButton_Click(object sender, EventArgs e)
+        {
+            using (var conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SelectDeckByName"))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@deckName", DropdownOfDecks.Text);
+                    cmd.Parameters.AddWithValue("@ownerID", 3); //temporary until we get user IDS/user systems set up
+                    cmd.Connection = conn;
+                    conn.Open();
+                    Session["currentDeckID"] = cmd.ExecuteScalar();
+                    Session["currentDeckName"] = DropdownOfDecks.Text;
+                    conn.Close();
+
+
+                }
+            }
+            newDeckDiv.Visible = true;
+            cardSelectionDiv.Visible = true;
+            currentDeckDiv.Visible = true;
+            currentDeckNameLabel.Text = (string)Session["currentDeckName"];
+        }
+
+        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
