@@ -36,21 +36,31 @@
         </asp:GridView>
         </div>
         <hr />
+
+
       <div id="currentDeckDiv" runat="server" Visible="false">
         CURRENT DECK:
         <asp:Label id="currentDeckNameLabel" runat="server"></asp:Label>
-      <asp:GridView ID="currentDeck" runat="server" AutoGenerateColumns="False" >
-            <Columns>
-                <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" />
-                <asp:BoundField DataField="cardName" HeaderText="cardName" SortExpression="cardName" />
-                <asp:ButtonField runat="server" Text="Remove"  />
-            </Columns>
+      <asp:GridView ID="currentDeck" runat="server" AutoGenerateColumns="False" DataKeyNames="cardID" DataSourceID="SqlDataSource3" >
+          <Columns>
+              <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" />
+              <asp:BoundField DataField="cardName" HeaderText="cardName" SortExpression="cardName" />
+              <asp:BoundField DataField="NumberOfAppearences" HeaderText="NumberOfAppearences" SortExpression="NumberOfAppearences"/>
+              <asp:ButtonField runat="server" Text="Remove"/>
+          </Columns>
         </asp:GridView>
+          <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="GetDeckList" SelectCommandType="StoredProcedure">
+              <SelectParameters>
+                  <asp:Parameter Name="deckID" Type="Int32"/>
+              </SelectParameters>
+          </asp:SqlDataSource>
        </div>
+
+
       <div id="newDeckDiv" runat="server">
         CREATE NEW DECK:
-        <asp:TextBox ID="DeckName" runat="server" Text="Enter Name"></asp:TextBox>
-        <asp:Button ID="SaveButton" runat="server" Text="Create Deck!" OnClick="SaveButton_Click" /><br />
+          <asp:TextBox ID="DeckName" runat="server" Text="Enter Name"></asp:TextBox>
+          <asp:Button ID="SaveButton" runat="server" Text="Create Deck!" OnClick="SaveButton_Click" /><br />
         SELECT DECK:
           <asp:DropDownList ID="DropdownOfDecks" runat="server" DataSourceID="SqlDataSource2" DataTextField="deckName" DataValueField="deckName" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"></asp:DropDownList>
           <asp:Button ID="SelectButton" runat="server" Text="Select Deck!" OnClick="SelectButton_Click" /><br /> 

@@ -14,7 +14,7 @@ namespace AWP_TCG
         private static readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["currentDeckID"] != null)
+            if (Session["currentDeckID"] != null)
             {
                 newDeckDiv.Visible = true;
                 cardSelectionDiv.Visible = true;
@@ -43,6 +43,8 @@ namespace AWP_TCG
 
                     }
                 }
+            currentDeck.DataBind();
+
         }
 
         protected void SaveButton_Click(object sender, EventArgs e)
@@ -67,6 +69,8 @@ namespace AWP_TCG
             cardSelectionDiv.Visible = true;
             currentDeckDiv.Visible = true;
             currentDeckNameLabel.Text = (string)Session["currentDeckName"];
+            SqlDataSource3.SelectParameters["deckID"].DefaultValue = Session["currentDeckID"].ToString();
+
         }
 
         protected void SelectButton_Click(object sender, EventArgs e)
@@ -91,6 +95,8 @@ namespace AWP_TCG
             cardSelectionDiv.Visible = true;
             currentDeckDiv.Visible = true;
             currentDeckNameLabel.Text = (string)Session["currentDeckName"];
+            SqlDataSource3.SelectParameters["deckID"].DefaultValue = Session["currentDeckID"].ToString();
+
         }
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
