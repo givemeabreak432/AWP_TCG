@@ -41,7 +41,7 @@
       <div id="currentDeckDiv" runat="server" Visible="false">
         CURRENT DECK:
         <asp:Label id="currentDeckNameLabel" runat="server"></asp:Label>
-      <asp:GridView ID="currentDeck" runat="server" AutoGenerateColumns="False" DataKeyNames="cardID" DataSourceID="SqlDataSource3" >
+      <asp:GridView ID="currentDeck" runat="server" AutoGenerateColumns="False" DataKeyNames="cardID" DataSourceID="SqlDataSource3" OnRowCommand="RemoveCard_RowCommand" >
           <Columns>
               <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" />
               <asp:BoundField DataField="cardName" HeaderText="cardName" SortExpression="cardName" />

@@ -23,6 +23,7 @@ namespace AWP_TCG
             }
         }
 
+        //adds card to deck
         protected void AllCards_RowCommand(object sender, GridViewCommandEventArgs e)
         {
                 int index = Convert.ToInt32(e.CommandArgument);
@@ -46,7 +47,33 @@ namespace AWP_TCG
             currentDeck.DataBind();
 
         }
+        
+        //remove card from deck
+        protected void RemoveCard_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            int index = Convert.ToInt32(e.CommandArgument);
+            GridViewRow row = currentDeck.Rows[index];
+            Response.Write("Added " + row.Cells[0].Text);
 
+            using (var conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("RemoveCardFromDeck"))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@deckID", (int)Session["currentDeckID"]);
+                    cmd.Parameters.AddWithValue("@cardID", row.Cells[0].Text);
+                    cmd.Connection = conn;
+                    conn.Open();
+                    cmd.ExecuteNonQuery();
+                    conn.Close();
+
+                }
+            }
+            currentDeck.DataBind();
+
+        }
+
+        //creates a new deck
         protected void SaveButton_Click(object sender, EventArgs e)
         {
             using (var conn = new SqlConnection(connectionString))
@@ -70,9 +97,11 @@ namespace AWP_TCG
             currentDeckDiv.Visible = true;
             currentDeckNameLabel.Text = (string)Session["currentDeckName"];
             SqlDataSource3.SelectParameters["deckID"].DefaultValue = Session["currentDeckID"].ToString();
+            DropdownOfDecks.DataBind();
 
         }
 
+        //selects an active deck
         protected void SelectButton_Click(object sender, EventArgs e)
         {
             using (var conn = new SqlConnection(connectionString))
