@@ -17,6 +17,11 @@
 
     </div>
 
+        <div id="loginDiv" runat="server" Visible="false">
+            You must be logged in to use this feature. <br />
+            <asp:Button runat="server" ID="loginButton" Text="Login" OnClick="loginButton_Click" />
+        </div>
+
         <br />
         <div id="cardSelectionDiv" runat="server" Visible="false">
          CARDS AVAILABLE:
@@ -63,8 +68,13 @@
           <asp:Button ID="SaveButton" runat="server" Text="Create Deck!" OnClick="SaveButton_Click" /><br />
         SELECT DECK:
           <asp:DropDownList ID="DropdownOfDecks" runat="server" DataSourceID="SqlDataSource2" DataTextField="deckName" DataValueField="deckName" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"></asp:DropDownList>
-          <asp:Button ID="SelectButton" runat="server" Text="Select Deck!" OnClick="SelectButton_Click" /><br /> 
-          <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [deckName] FROM [DECK]"></asp:SqlDataSource>
+          <asp:Button ID="SelectButton" runat="server" Text="Select Deck!" OnClick="SelectButton_Click" />
+          <asp:Label ID="noDecksLabel" runat="server" Text="You have no decks. Try creating one!"></asp:Label><br /> 
+          <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SelectDecKByOwner" SelectCommandType="StoredProcedure">
+              <SelectParameters>
+                  <asp:Parameter Name="ownerID" Type ="Int32" />
+              </SelectParameters>
+          </asp:SqlDataSource>
       </div>
     </form>
 </body>

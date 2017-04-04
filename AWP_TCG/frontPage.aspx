@@ -11,7 +11,8 @@
     <div>
     
     </div>
-        <asp:Button ID="loginButton" runat="server" OnClick="loginButton_Click" Text="Login/Create Acct" Width="174px" />
+        <asp:Button ID="loginButton" runat="server" OnClick="loginButton_Click" Text="Login/Create Acct" Width="174px" /><br />
+        <asp:Button ID="deckBuilderButton" runat="server" Text="Go To Deck Builder" Width="174px" OnClick="deckBuilderButton_Click" />
     </form>
 </body>
 </html>

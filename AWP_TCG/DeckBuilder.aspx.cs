@@ -14,12 +14,39 @@ namespace AWP_TCG
         private static readonly string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (Session["id"] == null)
+            {
+                newDeckDiv.Visible = false;
+                cardSelectionDiv.Visible = false;
+                currentDeckDiv.Visible = false;
+                loginDiv.Visible = true;
+                return;
+            }
+            if (!IsPostBack)
+            {
+                SqlDataSource2.SelectParameters["ownerID"].DefaultValue = Session["id"].ToString();
+                DropdownOfDecks.DataBind();
+            }
+
+            //setting visibilities
             if (Session["currentDeckID"] != null)
             {
                 newDeckDiv.Visible = true;
                 cardSelectionDiv.Visible = true;
                 currentDeckDiv.Visible = true;
-
+                loginDiv.Visible = false;
+            }
+            if (DropdownOfDecks.Items.Count == 0)
+            {
+                DropdownOfDecks.Visible = false;
+                SelectButton.Visible = false;
+                noDecksLabel.Visible = true;
+            }
+            else
+            {
+                DropdownOfDecks.Visible = true;
+                SelectButton.Visible = true;
+                noDecksLabel.Visible = false;
             }
         }
 
@@ -28,8 +55,6 @@ namespace AWP_TCG
         {
                 int index = Convert.ToInt32(e.CommandArgument);
                 GridViewRow row = AllCards.Rows[index];
-                Response.Write("Added " + row.Cells[0].Text);
-
                 using (var conn = new SqlConnection(connectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand("addCardToDeck"))
@@ -53,7 +78,6 @@ namespace AWP_TCG
         {
             int index = Convert.ToInt32(e.CommandArgument);
             GridViewRow row = currentDeck.Rows[index];
-            Response.Write("Added " + row.Cells[0].Text);
 
             using (var conn = new SqlConnection(connectionString))
             {
@@ -76,20 +100,39 @@ namespace AWP_TCG
         //creates a new deck
         protected void SaveButton_Click(object sender, EventArgs e)
         {
+            //check if deck with name exists
+            using (var conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SelectDeckByName"))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@deckName", DeckName.Text);
+                    cmd.Parameters.AddWithValue("@ownerID", (int)Session["id"]); 
+                    cmd.Connection = conn;
+                    conn.Open();
+                    if(cmd.ExecuteScalar() != null)
+                    {
+                        Response.Write("Deck with given name already exists");
+                        return;
+                    }
+                    conn.Close();
+
+                
+                }
+            }
+
             using (var conn = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("newDeck"))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@deckName", DeckName.Text);
-                    cmd.Parameters.AddWithValue("@ownerID", 3); //temporary until we get user IDS/user systems set up
+                    cmd.Parameters.AddWithValue("@ownerID", (int)Session["id"]); 
                     cmd.Connection = conn;
                     conn.Open();
                     Session["currentDeckID"] = cmd.ExecuteScalar();
                     Session["currentDeckName"] = DeckName.Text;
                     conn.Close();
-
-
                 }
             }
             newDeckDiv.Visible = true;
@@ -97,8 +140,8 @@ namespace AWP_TCG
             currentDeckDiv.Visible = true;
             currentDeckNameLabel.Text = (string)Session["currentDeckName"];
             SqlDataSource3.SelectParameters["deckID"].DefaultValue = Session["currentDeckID"].ToString();
+            SqlDataSource2.SelectParameters["ownerID"].DefaultValue = Session["id"].ToString();
             DropdownOfDecks.DataBind();
-
         }
 
         //selects an active deck
@@ -110,14 +153,12 @@ namespace AWP_TCG
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@deckName", DropdownOfDecks.Text);
-                    cmd.Parameters.AddWithValue("@ownerID", 3); //temporary until we get user IDS/user systems set up
+                    cmd.Parameters.AddWithValue("@ownerID", Session["id"]); 
                     cmd.Connection = conn;
                     conn.Open();
                     Session["currentDeckID"] = cmd.ExecuteScalar();
                     Session["currentDeckName"] = DropdownOfDecks.Text;
                     conn.Close();
-
-
                 }
             }
             newDeckDiv.Visible = true;
@@ -126,11 +167,18 @@ namespace AWP_TCG
             currentDeckNameLabel.Text = (string)Session["currentDeckName"];
             SqlDataSource3.SelectParameters["deckID"].DefaultValue = Session["currentDeckID"].ToString();
 
+
+
         }
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        protected void loginButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("login.aspx");
         }
     }
 }

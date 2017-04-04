@@ -24,5 +24,10 @@ namespace AWP_TCG
         {
             Response.Redirect("login.aspx");
         }
+
+        protected void deckBuilderButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("DeckBuilder.aspx");
+        }
     }
 }

@@ -17,7 +17,7 @@ namespace AWP_TCG
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(Session["username"] != null)
+            if(Session["id"] != null)
                 Response.Redirect("frontPage.aspx");
         }
 
@@ -39,13 +39,14 @@ namespace AWP_TCG
                 }
                 switch (validation)
                 {
-                    case -1:
+                    case 0:
                         //Login failed, Username and Password incorrect
                         break;
                     default:
                         //Login succeeded, add the parameters to session
                         Session["username"] = username.Text;
-                        Session["password"] = password.Text;
+                        //Session["password"] = password.Text;
+                        Session["id"] = validation;
                         Response.Redirect("frontPage.aspx");
                         break;
                 }
@@ -57,7 +58,7 @@ namespace AWP_TCG
         protected void newSubmit_Click(object sender, EventArgs e)
         {
             Session["username"] = newUsername.Text;
-            Session["password"] = newPassword.Text;
+            //Session["password"] = newPassword.Text;
 
             SqlParameter[] parameters = new SqlParameter[3];
 
@@ -71,13 +72,14 @@ namespace AWP_TCG
                 using (var command = new SqlCommand("newUser", conn)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure
+
                 })
                 {
                     command.Parameters.Add(parameters[0]);
                     command.Parameters.Add(parameters[1]);
                     command.Parameters.Add(parameters[2]);
                     conn.Open();
-                    command.ExecuteNonQuery();
+                    Session["id"] = Convert.ToInt32(command.ExecuteScalar());
                     conn.Close();
                 }
             }//add to db
