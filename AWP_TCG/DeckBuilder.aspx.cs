@@ -180,5 +180,24 @@ namespace AWP_TCG
         {
             Response.Redirect("login.aspx");
         }
+
+        protected void FilterButton_Click(object sender, EventArgs e)
+        {
+            using (var conn = new SqlConnection(connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("SelectTypeByName"))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@typeName", DropDownOfTypes.Text);
+                    cmd.Connection = conn;
+                    conn.Open();
+                    SqlDataSource1.SelectParameters["cardType"].DefaultValue = cmd.ExecuteScalar().ToString();
+                    conn.Close();
+                    AllCards.DataBind();
+
+
+                }
+            }
+        }
     }
 }

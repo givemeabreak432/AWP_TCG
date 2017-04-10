@@ -10,7 +10,25 @@
 </head>
 <body>
     <form id="form1" runat="server">
-    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT [cardID], [cardName], [cardCost], [blueCost], [greenCost], [redCost], [whiteCost], [blackCost], [cardDescription] FROM [Card]"></asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSource1" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="GetAllCards" SelectCommandType ="StoredProcedure">
+       <SelectParameters>
+            <asp:Parameter Name="cardType" DefaultValue ="-1" Type ="Int32" />
+       </SelectParameters>
+    </asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SelectDecKByOwner" SelectCommandType="StoredProcedure">
+        <SelectParameters>
+            <asp:Parameter Name="ownerID" Type ="Int32" />
+        </SelectParameters>
+    </asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="GetDeckList" SelectCommandType="StoredProcedure">
+        <SelectParameters>
+            <asp:Parameter Name="deckID" Type="Int32"/>
+        </SelectParameters>
+    </asp:SqlDataSource>
+    <asp:SqlDataSource ID="SqlDataSource4" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SELECT typeName FROM cardType">
+    </asp:SqlDataSource>
+
+
     <div>
     
         Deck Builder Prototype:   
@@ -24,11 +42,14 @@
 
         <br />
         <div id="cardSelectionDiv" runat="server" Visible="false">
-         CARDS AVAILABLE:
+         CARDS AVAILABLE: <br />
+        FILTER BY TYPE: <asp:DropDownList ID="DropDownOfTypes" runat="server" DataSourceID="SqlDataSource4" DataTextField="typeName" DataValueField="typeName" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"></asp:DropDownList>
+        <asp:Button ID="FilterButton" runat="server" Text="Filter Selection" OnClick="FilterButton_Click" /> <br />
         <asp:GridView ID="AllCards" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1" OnRowCommand="AllCards_RowCommand" DataKeyNames="cardID">
             <Columns>
                 <asp:BoundField DataField="cardID" HeaderText="cardID" SortExpression="cardID" InsertVisible="False" ReadOnly="True" />
                 <asp:BoundField DataField="cardName" HeaderText="cardName" SortExpression="cardName" />
+                <asp:BoundField DataField="typeName" HeaderText="Type" SortExpression="typeName" />
                 <asp:BoundField DataField="cardCost" HeaderText="cardCost" SortExpression="cardCost" />
                 <asp:BoundField DataField="blueCost" HeaderText="blueCost" SortExpression="blueCost" />
                 <asp:BoundField DataField="greenCost" HeaderText="greenCost" SortExpression="greenCost" />
@@ -54,11 +75,6 @@
               <asp:ButtonField runat="server" Text="Remove"/>
           </Columns>
         </asp:GridView>
-          <asp:SqlDataSource ID="SqlDataSource3" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="GetDeckList" SelectCommandType="StoredProcedure">
-              <SelectParameters>
-                  <asp:Parameter Name="deckID" Type="Int32"/>
-              </SelectParameters>
-          </asp:SqlDataSource>
        </div>
 
 
@@ -70,11 +86,6 @@
           <asp:DropDownList ID="DropdownOfDecks" runat="server" DataSourceID="SqlDataSource2" DataTextField="deckName" DataValueField="deckName" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"></asp:DropDownList>
           <asp:Button ID="SelectButton" runat="server" Text="Select Deck!" OnClick="SelectButton_Click" />
           <asp:Label ID="noDecksLabel" runat="server" Text="You have no decks. Try creating one!"></asp:Label><br /> 
-          <asp:SqlDataSource ID="SqlDataSource2" runat="server" ConnectionString="<%$ ConnectionStrings:ConnectionString %>" SelectCommand="SelectDecKByOwner" SelectCommandType="StoredProcedure">
-              <SelectParameters>
-                  <asp:Parameter Name="ownerID" Type ="Int32" />
-              </SelectParameters>
-          </asp:SqlDataSource>
       </div>
     </form>
 </body>
