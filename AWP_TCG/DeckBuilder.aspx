@@ -41,8 +41,7 @@
         </div>
 
         <br />
-        <div id="cardSelectionDiv" runat="server" Visible="false">
-         CARDS AVAILABLE: <br />
+        CARDS AVAILABLE: <br />
         FILTER BY TYPE: <asp:DropDownList ID="DropDownOfTypes" runat="server" DataSourceID="SqlDataSource4" DataTextField="typeName" DataValueField="typeName" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged"></asp:DropDownList>
         <asp:Button ID="FilterButton" runat="server" Text="Filter Selection" OnClick="FilterButton_Click" /> <br />
         <asp:GridView ID="AllCards" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDataSource1" OnRowCommand="AllCards_RowCommand" DataKeyNames="cardID">
