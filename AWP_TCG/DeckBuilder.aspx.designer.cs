@@ -76,6 +76,15 @@ namespace AWP_TCG {
         protected global::System.Web.UI.WebControls.Button loginButton;
         
         /// <summary>
+        /// cardSelectionDiv control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cardSelectionDiv;
+        
+        /// <summary>
         /// DropDownOfTypes control.
         /// </summary>
         /// <remarks>
