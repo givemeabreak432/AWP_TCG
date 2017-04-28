@@ -33,14 +33,20 @@
                 decLobbies = JSON.parse(lobbies);
                 $('#lobbyTable').html("<thead><tr><th>Lobby</th><th>Creator</th><th></th></tr></thead>");
                 for (i = 0; i < decLobbies.length; ++i) {
-                    $('#lobbyTable').append('<tr><td>' + decLobbies[i]["Item1"] + "</td><td>" + decLobbies[i]["Item2"] + '</td><td><input type=\"button\" id=\"joinButton" value="Join" style="float:right"/></td></tr>'); //Tuples in JSON are sent as objects with the values identified by keys "Item1", "Item2", and so on.
+                    $('#lobbyTable').append('<tr><td>' + decLobbies[i]["name"] + "</td><td>" + decLobbies[i]["host"] + '</td><td><input type=\"button\" class=\"joinButton" id="' + decLobbies[i]["id"] + '" value="Join" style= "float:right" /></td ></tr > '); //Tuples in JSON are sent as objects with the values identified by the object Lobby in LobbyHub
+                    $("#" + decLobbies[i]["id"]).prop("disabled", decLobbies[i]["isFull"]);
+                    console.log("ID: " + decLobbies[i]["id"] + "; isFull: " + decLobbies[i]["isFull"]);
                 }
                 $('#lobbyTable').append("</table>")
+                $(".joinButton").click(function () {
+                    lobby.invoke('ConnectLobby', $(this.id)); //TODO: this is not changing the value of the lobby to true as intended. Console prints fine, but function does not appear to be attached.
+                    console.log("clicked");
+                });
             });
             
             conn.start().done(function () {
                 $("#sendLobby").click(function () {
-                    console.log("button clicked");
+                    //console.log("button clicked");
                     lobby.invoke('SendLobby', $("#text").val(), $("#username").val());
                     $('#text').val('').focus();
                 });
