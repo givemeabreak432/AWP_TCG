@@ -14,6 +14,7 @@
 
     <input type="text" id="text" />
     <input type="button" id="sendLobby" value="Send"/>
+    <input type="button" id="test" value="test"/>
 
     <div id="lobbyContainer" style="overflow: auto; width: 500px; height: 500px;">
         <table id="lobbyTable">
@@ -28,6 +29,8 @@
         $(function () {
             var conn = $.hubConnection("http://localhost:59147/signalr");
             var lobby = conn.createHubProxy('LobbyHub');
+            //var _ConnectLobby;
+            var curID = 0;
                                                      
             lobby.on('BroadcastLobbies', function (lobbies) {
                 decLobbies = JSON.parse(lobbies);
@@ -39,7 +42,8 @@
                 }
                 $('#lobbyTable').append("</table>")
                 $(".joinButton").click(function () {
-                    lobby.invoke('ConnectLobby', $(this.id)); //TODO: this is not changing the value of the lobby to true as intended. Console prints fine, but function does not appear to be attached.
+                    //_ConnectLobby($(this.id)); //TODO: this is not changing the value of the lobby to true as intended. Console prints fine, but function does not appear to be attached.
+                    $("#test").trigger("click")
                     console.log("clicked");
                 });
             });
@@ -47,9 +51,18 @@
             conn.start().done(function () {
                 $("#sendLobby").click(function () {
                     //console.log("button clicked");
+                    curID = $(this.id)
                     lobby.invoke('SendLobby', $("#text").val(), $("#username").val());
                     $('#text').val('').focus();
                 });
+
+                _ConnectLobby = function (id) {
+                    lobby.invoke('ConnectLobby', curID);
+                }
+                $("#test").click(function () {
+                    _ConnectLobby(1);
+                });
+
             });
 
         });
