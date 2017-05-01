@@ -171,7 +171,6 @@
       <DependentUpon>chat.aspx</DependentUpon>
     </Compile>
     <Compile Include="LobbyHub.cs" />
-    <Compile Include="ChatHub.cs" />
     <Compile Include="DeckBuilder.aspx.cs">
       <DependentUpon>DeckBuilder.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -16,8 +16,10 @@ namespace AWP_TCG
 
         public void SendLobby(string room, string name)
         {
-            lobbies.Add(new Lobby(Guid.NewGuid().ToString("N"), room, name, false)); //Guid guaruntees a unique id for each lobby
+            Lobby newLobby = new Lobby(Guid.NewGuid().ToString("N"), room, name, false); //Guid guaruntees a unique id for each lobby
+            lobbies.Add(newLobby); 
             string json = JsonConvert.SerializeObject(lobbies, Formatting.None);
+            Groups.Add(Context.ConnectionId, newLobby.id);
             Clients.All.BroadcastLobbies(json);
         }
 
@@ -35,11 +37,44 @@ namespace AWP_TCG
             Clients.All.BroadcastLobbies(json);
         }
 
-        public override Task OnConnected()
+        public void SendMessage(string name, string message, string roomID) //roomID = "all" is used for global chat
         {
-            string json = JsonConvert.SerializeObject(lobbies, Formatting.None);
-            Clients.Client(Context.ConnectionId).BroadcastLobbies(json);
-            return base.OnConnected();
+            if (roomID == "all")
+            {
+                Clients.All.BroadcastMessage(name, message, "Global");
+            }
+            else
+            {
+                string lobbyName = "";
+                foreach (Lobby item in lobbies)
+                {
+                    if (item.id.Equals(roomID))
+                    {
+                        lobbyName = item.name;
+                    }
+                }
+                Clients.Group(roomID).BroadcastMessage(name, message, lobbyName);
+            }
+        }
+
+        public void PageStart(string source)
+        {
+            switch (source) {
+                case "lobby":
+                    string json = JsonConvert.SerializeObject(lobbies, Formatting.None);
+                    Clients.Client(Context.ConnectionId).BroadcastLobbies(json);
+                    break;
+                case "gameRoom":
+                    Clients.Client(Context.ConnectionId).JoinRoom();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        public void JoinRoom(string roomID)
+        {
+            Groups.Add(Context.ConnectionId, roomID);
         }
 
         public class Lobby

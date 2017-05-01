@@ -11,7 +11,8 @@ namespace AWP_TCG
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            username.Value = Session["username"].ToString();
+            roomID.Value = Request.Form["roomID"];
         }
     }
 }

@@ -11,8 +11,13 @@ namespace AWP_TCG
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["username"] = "UserName:";
-            username.Value = Session["username"].ToString();
+            if(Session["username"] != null)
+                username.Value = Session["username"].ToString();
+            else
+            {
+                sendMessage.Visible = false;
+                Response.Write("If you wanna chat, login!");
+            }
         }
     }
 }

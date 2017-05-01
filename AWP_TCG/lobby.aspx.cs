@@ -11,8 +11,17 @@ namespace AWP_TCG
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            Session["username"] = "UserName";
-            username.Value = Session["username"].ToString();
+            if (Session["username"] != null)
+            {
+                username.Value = Session["username"].ToString();
+                loginDiv.Visible = false;
+                lobbyDiv.Visible = true;
+            }
+            else
+            {
+                loginDiv.Visible = true;
+                lobbyDiv.Visible = false;
+            }
         }
     }
 }
