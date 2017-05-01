@@ -20,6 +20,7 @@ namespace AWP_TCG
             lobbies.Add(newLobby); 
             string json = JsonConvert.SerializeObject(lobbies, Formatting.None);
             Groups.Add(Context.ConnectionId, newLobby.id);
+            Clients.Client(Context.ConnectionId).JoinLobby(newLobby.id);
             Clients.All.BroadcastLobbies(json);
         }
 

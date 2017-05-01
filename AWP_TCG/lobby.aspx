@@ -55,6 +55,11 @@
                     //console.log("clicked");
                 });
             });
+
+            lobby.on('JoinLobby', function (id) {
+                $("#roomID").val(id);
+                $("#submitProxy").trigger("click");
+            });
             
             conn.start().done(function () {
                 $("#sendLobby").click(function () {

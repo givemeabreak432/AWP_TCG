@@ -77,7 +77,7 @@ namespace AWP_TCG
 
                 }
             }
-            else Response.Write("This deck is too small! Please add more cards to this deck, or selec ta new deck");
+            else Response.Write("This deck is too small! Please add more cards to this deck, or select a new deck");
         }
 
         protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)

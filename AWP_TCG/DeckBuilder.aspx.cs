@@ -181,6 +181,11 @@ namespace AWP_TCG
             Response.Redirect("login.aspx");
         }
 
+        protected void homeButton_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("frontPage.aspx");
+        }
+
         protected void FilterButton_Click(object sender, EventArgs e)
         {
             using (var conn = new SqlConnection(connectionString))

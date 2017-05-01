@@ -41,6 +41,10 @@
             <asp:Button runat="server" ID="loginButton" Text="Login" OnClick="loginButton_Click" />
         </div>
 
+        <div id="homeDiv" runat="server" Visible="true">
+            <asp:Button runat="server" ID="homeButton" Text="Home" OnClick="homeButton_Click" />
+        </div>
+
         <br />
         <div id="cardSelectionDiv" runat="server" Visible="false">
         CARDS AVAILABLE: <br />
