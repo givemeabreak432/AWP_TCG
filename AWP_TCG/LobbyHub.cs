@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using System.Collections;
 using Newtonsoft.Json;
 using System.Threading.Tasks;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 
 namespace AWP_TCG
 {
@@ -58,6 +61,21 @@ namespace AWP_TCG
             }
         }
 
+        public void GetPlayerID(string roomID)
+        {
+            int connections = 0;
+            foreach (Lobby item in lobbies)
+            {
+                if (item.id.Equals(roomID))
+                {
+                    item.connections = item.connections + 1;
+                    connections = item.connections;
+                }
+            }
+
+            Clients.Client(Context.ConnectionId).ReceiveID(connections);
+        }
+
         public void PageStart(string source)
         {
             switch (source) {
@@ -84,6 +102,7 @@ namespace AWP_TCG
             public string name { get; set; }
             public string host { get; set; }
             public bool isFull { get; set; }
+            public int connections { get; set; }
 
             public Lobby(string inID, string inName, string inHost, bool inFull)
             {
@@ -91,6 +110,7 @@ namespace AWP_TCG
                 name = inName;
                 host = inHost;
                 isFull = inFull;
+                connections = 0;
             }
         }
 

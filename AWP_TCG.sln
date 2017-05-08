@@ -5,6 +5,13 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWP_TCG", "AWP_TCG\AWP_TCG.csproj", "{7627716C-895C-4724-88FC-6F9B157F31B7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{41F92204-2E28-4BDC-907C-933951FF1C04}"
+	ProjectSection(SolutionItems) = preProject
+		Card.cs = Card.cs
+		Deck.cs = Deck.cs
+		Hand.cs = Hand.cs
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

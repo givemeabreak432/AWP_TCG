@@ -24,6 +24,7 @@
 
     <form id="form1" runat="server">
         <input type="hidden" id="username" runat="server" />
+        <asp:TextBox id="playerID" runat="server" OnChange="setID" AutoPostBack="true" style="visibility:hidden" />
         <input type="text" runat="server" id="roomID" value=" " placeholder="null" style="visibility:hidden"/>
 
     <input type="button" id="startProxy" value="" style="visibility:hidden" />
@@ -53,6 +54,7 @@
            //var chat = $.connection.ChatHub;
             var conn = $.hubConnection("http://localhost:59147/signalr");
             var lobby = conn.createHubProxy('LobbyHub');
+            var playerID = -1;
 
             lobby.on('BroadcastMessage', function (name, message, roomID) {
                 var encodedName = $('<div />').text(name).html();
@@ -65,6 +67,13 @@
             lobby.on('JoinRoom', function () {
                 console.log($("#roomID").val());
                 $("#startProxy").trigger("click");
+
+            });
+
+            lobby.on('ReceiveID', function (connections) {
+                playerID = connections;
+                $('#playerID').val(playerID);
+                $('#handContainer').prepend('<p><b>You are player ' + playerID + '</b></p>');
             });
             
             conn.start().done(function () {
@@ -79,6 +88,10 @@
                 });
 
                 lobby.invoke('PageStart', 'gameRoom');
+                if ($('#playerID').val() == "")
+                {
+                    lobby.invoke('GetPlayerID', $("#roomID").val());
+                }
             });
 
         });

@@ -24,10 +24,20 @@ namespace AWP_TCG
                 SqlDataSource.SelectParameters["ownerID"].DefaultValue = Session["id"].ToString();
                 DropdownOfDecks.DataBind();
             }
+            if (Session[roomID.Value + "ID"] != null)
+            {
+                playerID.Text = Session[roomID.Value + "ID"].ToString();
+            }
+        }
+
+        protected void SetID(object sender, EventArgs e)
+        {
+            Session[roomID.Value + "ID"] = playerID.Text;
         }
 
         protected void SelectButton_Click(object sender, EventArgs e)
         {
+            
             using (var conn = new SqlConnection(connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("GetCardsInDeck"))
@@ -74,6 +84,7 @@ namespace AWP_TCG
                     //decrease range
                     numCardsSel++;
                     selCardRange--;
+                    decklist.RemoveAt(selCard);
 
                 }
             }

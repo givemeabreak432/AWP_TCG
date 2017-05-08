@@ -40,6 +40,15 @@ namespace AWP_TCG {
         protected global::System.Web.UI.HtmlControls.HtmlInputHidden username;
         
         /// <summary>
+        /// playerID control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox playerID;
+        
+        /// <summary>
         /// roomID control.
         /// </summary>
         /// <remarks>
